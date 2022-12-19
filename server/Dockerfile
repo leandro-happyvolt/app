@@ -4,6 +4,10 @@ WORKDIR /app
 
 COPY ./tsconfig.json ./
 COPY package*.json ./
+COPY ./prisma ./prisma/
+
+# COPY ./nodemon.json ./
+# COPY ./index.d.ts ./
 
 RUN npm install
 

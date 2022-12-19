@@ -13,6 +13,17 @@ import {
   SESSION_COOKIE_NAME,
 } from "./configs";
 
+// * CONNECTION DB
+import { connectToDatabase } from "./configs/mongoDbConnection";
+connectToDatabase()
+  .then(() => {
+    console.log("Connected to database");
+  })
+  .catch((err: Error) => {
+    console.error("Database connection failedd", err);
+    process.exit();
+  });
+
 // * PORT APP
 // * QUIZAS ESTE PORT DEBEBÍAMOS PASARSELO POR ARG O ENV YA SEA DOCKERFILE O DOCKER COMPOSE
 const PORT = process.env.PORT || 4000;
