@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  client:
+    image: client-eco
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+      # Esto es para que copie el .env correspondiente al modo de entorno al workdir del contenedor
+      args:
+        - ENV_MODE=development
+    depends_on:
+      - server
+    ports:
+      - 3000:3500
+    volumes:
+      - ./client/src:/app/src
+    # Con esto sobreescribimos el command de la imagen para que utilice el .env correspondiente
+    command: npm run start:development
+    restart: always
+  
+  server:
+    image: server-eco
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+      # Esto es para que copie el .env correspondiente al modo de entorno al workdir del contenedor
+      args:
+        - ENV_MODE=development
+    # Esto es para indicarle al contenedor corriendo que utilice el .env.process.env.ENV_MODE
+    environment:
+      - ENV_MODE=development
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server/src:/app/src
+    # Este es para que compile todo a JS y luego inicie con node ó para que inicie con nodemon -L
+    command: npm run start:development
+    restart: always

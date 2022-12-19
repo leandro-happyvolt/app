@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  client:
+    image: client-eco
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        - ENV_MODE=development
+    depends_on:
+      - server
+    ports:
+      - 3000:3500
+    volumes:
+      - ./client/src:/app/src
+    command: npm run start:development
+    restart: always
+  
+  server:
+    image: server-eco
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+      args:
+        - ENV_MODE=development
+    environment:
+      - ENV_MODE=development
+    depends_on:
+      - database
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server/src:/app/src
+    command: npm run start:development
+    restart: always
+
+  database:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=leandrocode123
+    ports:
+      - 6000:27017
+    volumes:
+      - ./mongo-eco-data:/data/db
+    restart: unless-stopped

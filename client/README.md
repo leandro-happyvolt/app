@@ -1,0 +1,1 @@
+Vitejs by for default import.meta.env.MODE running npm run dev is development

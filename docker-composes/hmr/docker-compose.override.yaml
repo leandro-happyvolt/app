@@ -1,0 +1,29 @@
+# Tanto cliente como servidor copian y cargan .env.development ó .env.testing ó .env.production y ambos con hot module reload
+
+# Los 2 primeros son para el cliente y los 3 ultimos son para el servidor (arg | command args | environment | command):
+
+# COMBINACIONES
+# client => development npm run start:development server => development development npm run start:development
+# client => testing npm run start:testing server => testing testing npm run start:development
+# client => production npm run start:production server => production production npm run start:development
+
+version: "3.9"
+services:
+  client:
+    build: 
+      # para que copie el .env.development al workdir
+      args:
+        - ENV_MODE=production
+    # para que cargue el .env.development (esto lo hace agregando --mode <ENV_MODE>)
+    command: npm run start:production
+  
+  server:
+    build: 
+      # para que copie el .env.development al workdir
+      args:
+        - ENV_MODE=production
+    # para que cargue el .env.development (esto lo hace modificando el path del dotenv.config({path:process.env.ENV_MODE}))
+    environment:
+      - ENV_MODE=production
+    # para que inicie con nodemon -L
+    command: npm run start:development

@@ -1,0 +1,24 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    // hot module reload
+    hmr: {
+      // client port server websocket
+      // The clientPort must be set to the port your Docker container exposes
+      // it means that the hmr must be the 80 value. That is the value that the browser will use to access the website.
+      clientPort: 3000,
+    },
+    watch: {
+      usePolling: true,
+    },
+    // Esto es lo mismo cuando le agregabamos --host al vite quedando vite --host en el script dev.
+    // Poner host:true <=> host:"0.0.0.0"
+    host: "0.0.0.0",
+    port: 3500,
+    strictPort: true,
+  },
+})
